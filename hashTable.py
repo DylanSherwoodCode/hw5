@@ -39,37 +39,27 @@ def hash_build(rows, column):
     start_time = timer_start()
     table, collisions = table_check(rows, column, size)
     end_time = timer_end(start_time)
-    space = table.count(None)
+    space = table.count([])
     return table, end_time, collisions, space
 
 
 #Creates an empty table, empty collisions, and if the key is not none, calls the insert
 # with the table, key and row
 def table_check(rows, column, size):
-    hash_table = [None] * size
+    hash_table = [[] for _ in range(size)]
     total_collisions = 0
     for row in rows:
         key = row[column]
         if key is None:
             continue
-        total_collisions += insert_linear(hash_table, key, row)
+        total_collisions += insert_linked(hash_table, key, row)
     return hash_table, total_collisions
 
 
-# Sets size to the length of the has table, index calls the hash function
-# To return an index value based on the key
-# If it reaches an index that is not None, that is a collision, then resizes
-# Index by 1 and continues checking
-# Returns collision count
-def insert_linear(hash_table, key, row):
-    size = len(hash_table)
-    index = hash_(key, size)
-    collisions = 0
-
-    while hash_table[index] is not None:
-        collisions += 1
-        index = (index + 1) % size # check next spot
-    hash_table[index] = row
+def insert_linked(hash_table, key, row):
+    index = hash_(key, len(hash_table))
+    collisions = len(hash_table[index])   # rows already in this slot
+    hash_table[index].append(row)
     return collisions
 
 def hash_(key, size):
