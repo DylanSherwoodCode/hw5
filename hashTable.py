@@ -32,8 +32,6 @@ def timer_end(start_time):
     return elapsed_time
 
 
-
-
 # takes in the rows and the column identifier, sets size to the len of rows
 # creates a table by calling table check with the row, column and size
 def hash_build(rows, column):
@@ -65,7 +63,7 @@ def table_check(rows, column, size):
 # Returns collision count
 def insert_linear(hash_table, key, row):
     size = len(hash_table)
-    index = hash_sum(key, size)
+    index = hash_(key, size)
     collisions = 0
 
     while hash_table[index] is not None:
@@ -74,19 +72,13 @@ def insert_linear(hash_table, key, row):
     hash_table[index] = row
     return collisions
 
-# Takes key and size, returns None for None values,
-# Iterates through each character in key, and adds a total
-# Based on it's unicode value then modulos that total based on the size of the list
-# and returns a hash
-def hash_sum(key, size):
+def hash_(key, size):
     if key is None:
         return None
     total = 0
     for char in key:
-        total += ord(char)
-    index = total % size
-    # print(index)
-    return index
+        total = total * 31 + ord(char)
+    return total % size
 
 
 
@@ -96,13 +88,13 @@ def main():
 
     title_table, time, title_collisions, space = hash_build(rows, 'movie_title')
     # print(title_table)
-    print("collisions =", title_collisions)
+    print("title collisions =", title_collisions)
     print("time = ", time)
     print("space = ", space)
 
     quote_table, time, quote_collisions, space = hash_build(rows, 'quote')
     # print(quote_table)
-    print("collisions =", quote_collisions)
+    print("quote collisions =", quote_collisions)
     print("time = ", time)
     print("space = ", space)
 
