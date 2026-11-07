@@ -46,7 +46,7 @@ def hash_build(rows, column):
 #Creates an empty table, empty collisions, and if the key is not none, calls the insert
 # with the table, key and row
 def table_check(rows, column, size):
-    hash_table = [[] for _ in range(size)]
+    hash_table = [[] for _ in range(size * 5)]
     total_collisions = 0
     for row in rows:
         key = row[column]
@@ -67,8 +67,8 @@ def hash_(key, size):
         return None
     index = 0
     for char in key:
-        index += ord(char)
-    return index % size
+        index = (index * 31 + ord(char)) % size
+    return index
 
 
 
