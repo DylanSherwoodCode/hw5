@@ -65,10 +65,10 @@ def insert_linked(hash_table, key, row):
 def hash_(key, size):
     if key is None:
         return None
-    total = 0
+    index = 0
     for char in key:
-        total = total * 31 + ord(char)
-    return total % size
+        index += ord(char)
+    return index % size
 
 
 
